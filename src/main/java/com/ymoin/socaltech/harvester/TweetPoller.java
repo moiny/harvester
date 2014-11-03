@@ -1,10 +1,9 @@
 package com.ymoin.socaltech.harvester;
 
+import com.ymoin.socaltech.harvester.service.TweetPollerService;
+import com.ymoin.socaltech.harvester.service.TweetPollerServiceImpl;
+
 import twitter4j.RawStreamListener;
-import twitter4j.StallWarning;
-import twitter4j.Status;
-import twitter4j.StatusDeletionNotice;
-import twitter4j.StatusListener;
 import twitter4j.Twitter;
 import twitter4j.TwitterFactory;
 import twitter4j.TwitterStream;
@@ -28,13 +27,13 @@ public class TweetPoller {
 				// TODO Auto-generated method stub
 			}
 			
-			public void onMessage(String arg0) {
-				System.out.println(arg0);
+			public void onMessage(String tweetJSON) {
+				TweetPollerService tweetPollerService = new TweetPollerServiceImpl();
+				System.out.println("tweetJSON : "+tweetJSON);
+				tweetPollerService.addTweet(tweetJSON);
 			}
 		};
         
-    	
-    	Twitter twitter = new TwitterFactory().getInstance();
     	TwitterStream twitterStream = new TwitterStreamFactory().getInstance();
     	twitterStream.addListener(listener);
     	twitterStream.sample();
